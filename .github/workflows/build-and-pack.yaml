@@ -10,7 +10,7 @@ jobs:
     runs-on: ubuntu-latest
     timeout-minutes: 10
     env:
-      aws-region: eu-west-1
+      region: eu-west-1
       ecr-repository: ecr-dev-eu-west-1
     steps:
       - name: Checkout
@@ -21,7 +21,7 @@ jobs:
         with:
           aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
           aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
-          aws-region: ${{ env.aws-region }}
+          aws-region: ${{ env.region }}
 
       - name: Push to ECR
         id: tag
