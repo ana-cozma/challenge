@@ -36,6 +36,13 @@ jobs:
         with:
           version: '3.8.0'
 
+      - name: Install yq
+        uses: mikefarah/yq@master
+
+      - name: Update values.yml for mywebapp
+        run: |
+          yq eval -i '.image.tag|= "$GITHUB_SHA"' helm/mywebapp/values.yaml
+
       - name: Package helm chart
         run: |
           helm package helm/mywebapp
