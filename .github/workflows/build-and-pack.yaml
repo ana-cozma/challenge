@@ -27,9 +27,9 @@ jobs:
         id: tag
         run: |
           aws ecr get-login-password --region ${{ env.region }}  | docker login --username AWS --password-stdin ${{ secrets.AWS_ACCOUNT_ID }}.dkr.ecr.${{ env.region }}.amazonaws.com
-          docker build -f app/Dockerfile --tag ${{ secrets.AWS_ACCOUNT_ID }}.dkr.ecr.${{ env.region }}.amazonaws.com/${{ env.docker-ecr-repository }}:$GITHUB_SHA .
+          docker build -f app/Dockerfile --tag ${{ secrets.AWS_ACCOUNT_ID }}.dkr.ecr.${{ env.region }}.amazonaws.com/${{ env.docker-ecr-repository }}:${{ github.sha }} .
 
-          docker push ${{ secrets.AWS_ACCOUNT_ID }}.dkr.ecr.${{ env.region }}.amazonaws.com/${{ env.docker-ecr-repository }}:$GITHUB_SHA
+          docker push ${{ secrets.AWS_ACCOUNT_ID }}.dkr.ecr.${{ env.region }}.amazonaws.com/${{ env.docker-ecr-repository }}:${{ github.sha }}
       
       - name: Install helm cli
         uses: azure/setup-helm@v1
@@ -41,7 +41,8 @@ jobs:
 
       - name: Update values.yml for mywebapp
         run: |
-          yq eval -i '.image.tag|= "$GITHUB_SHA"' helm/mywebapp/values.yaml
+          yq eval -i '.image.tag|= "${{ github.sha }}"' helm/mywebapp/values.yaml
+          cat helm/mywebapp/values.yaml
 
       - name: Package helm chart
         run: |
