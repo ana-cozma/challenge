@@ -50,4 +50,6 @@ jobs:
       - name: Push helm chart to ECR
         run: |
           package=$(ls *.tgz)
-          helm push $package oci://${{ secrets.AWS_ACCOUNT_ID }}.dkr.ecr.${{ env.region }}.amazonaws.com/
+          echo $package
+          pwd
+          helm push $package oci://${{ secrets.AWS_ACCOUNT_ID }}.dkr.ecr.${{ env.region }}.amazonaws.com
