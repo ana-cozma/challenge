@@ -11,7 +11,7 @@ jobs:
     timeout-minutes: 10
     env:
       region: eu-west-1
-      ecr-repository: mywebapp
+      docker-ecr-repository: ecr-docker-dev-eu-west-1
     steps:
       - name: Checkout
         uses: actions/checkout@v2
@@ -27,9 +27,9 @@ jobs:
         id: tag
         run: |
           aws ecr get-login-password --region ${{ env.region }}  | docker login --username AWS --password-stdin ${{ secrets.AWS_ACCOUNT_ID }}.dkr.ecr.${{ env.region }}.amazonaws.com
-          docker build -f app/Dockerfile --tag ${{ secrets.AWS_ACCOUNT_ID }}.dkr.ecr.${{ env.region }}.amazonaws.com/${{ env.ecr-repository }}:$GITHUB_SHA .
+          docker build -f app/Dockerfile --tag ${{ secrets.AWS_ACCOUNT_ID }}.dkr.ecr.${{ env.region }}.amazonaws.com/${{ env.docker-ecr-repository }}:$GITHUB_SHA .
 
-          docker push ${{ secrets.AWS_ACCOUNT_ID }}.dkr.ecr.${{ env.region }}.amazonaws.com/${{ env.ecr-repository }}:$GITHUB_SHA
+          docker push ${{ secrets.AWS_ACCOUNT_ID }}.dkr.ecr.${{ env.region }}.amazonaws.com/${{ env.docker-ecr-repository }}:$GITHUB_SHA
       
       - name: Install helm cli
         uses: azure/setup-helm@v1
