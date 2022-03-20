@@ -11,8 +11,6 @@ ingress:
   paths:
     - path: /mywebapp
       pathType: Prefix
-  annotations:
-    konghq.com/strip-path: "true"
 
 serviceAccount:
   create: true
