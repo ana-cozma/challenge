@@ -39,4 +39,4 @@ autoscaling:
 
 container:
   env:
-    GREET_VAR: "world"
+    - GREET_VAR: "world"
