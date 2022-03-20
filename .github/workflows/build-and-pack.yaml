@@ -11,7 +11,7 @@ jobs:
     timeout-minutes: 10
     env:
       region: eu-west-1
-      ecr-repository: ecr-dev-eu-west-1
+      ecr-repository: mywebapp
     steps:
       - name: Checkout
         uses: actions/checkout@v2
@@ -50,6 +50,4 @@ jobs:
       - name: Push helm chart to ECR
         run: |
           package=$(ls *.tgz)
-          echo $package
-          pwd
           helm push $package oci://${{ secrets.AWS_ACCOUNT_ID }}.dkr.ecr.${{ env.region }}.amazonaws.com
