@@ -24,7 +24,6 @@ jobs:
           aws-region: ${{ env.region }}
 
       - name: Push to ECR
-        id: tag
         run: |
           aws ecr get-login-password --region ${{ env.region }}  | docker login --username AWS --password-stdin ${{ secrets.AWS_ACCOUNT_ID }}.dkr.ecr.${{ env.region }}.amazonaws.com
           docker build -f app/Dockerfile --tag ${{ secrets.AWS_ACCOUNT_ID }}.dkr.ecr.${{ env.region }}.amazonaws.com/${{ env.docker-ecr-repository }}:${{ github.sha }} .
@@ -42,7 +41,6 @@ jobs:
       - name: Update values.yml for mywebapp
         run: |
           yq eval -i '.image.tag|= "${{ github.sha }}"' helm/mywebapp/values.yaml
-          cat helm/mywebapp/values.yaml
 
       - name: Package helm chart
         run: |
